@@ -17,10 +17,18 @@ layout: default
 
 | week        | topics          | instructor | materials | assignments |
 |:-------------|:------------------|:------|:------|:------|
-| 1 | course introduction, Python                |  |  | |
-| 2 | fully connected neural networks            |  |  | |
-| 3 | backpropagation, optimizers                |  |  | |
-| 4 | convolution, convolutional neural networks |  |  | |
+|  1 | course introduction, Python                |  |  | |
+|  2 | validation, machine learning methods       |  |  | |
+|  3 | fully connected neural networks            |  |  | |
+|  4 | backpropagation, optimizers                |  |  | |
+|  5 | convolution, convolutional neural networks |  |  | |
+|  6 | CNN architectures, deep learning tricks    |  |  | |
+|  7 | CNN implementation in Keras                |  |  | |
+|  8 | Adversarial examples                       |  |  | |
+|  9 | Object detection                           |  |  | |
+| 10 | word embedding                             |  |  | |
+| 11 | face recognition                           |  |  | |
+| 12 | Generative Adversarial Networks            |  |  | |
 
 # PREREQUISITES
  - basic linear algebra

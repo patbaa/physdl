@@ -16,8 +16,15 @@ In recent years we witnessed a huge development in machine learning, especially 
 - Use [issues](https://guides.github.com/features/issues/) on the course's [GitHub page](https://github.com/patbaa/physdl/)
 - room 5.103 in North building
 
+# Course staff
+ - Csabai István
+ - Ribli Dezső
+ - Pataki Bálint Ármin
+ - Bagoly Attila (former)
+
 # SYLLABUS (planned)
 ### to be updated
+
 | week        | topics          | instructor | materials | assignments |
 |:-------------|:------------------|:------|:------|:------|
 |  1 | course introduction, Python                |  |  | |

@@ -8,7 +8,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 # Technical details:
 - Neptun: deeplea17m
 - Language: Hungarian (slides and the materials in English)
-- Start: 2019.02.11.
+- Start: 2019.02.18.
 - Time: 9:00 - 10:00
 - Location: 0.81 Ortvay, North building
 
@@ -27,9 +27,9 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 | week        | topics          | instructor | materials | assignments |
 |:-------------|:------------------|:------|:------|:------|
-|  1 | course introduction, Python                |  |  | |
-|  2 | validation, machine learning methods       |  |  | |
-|  3 | fully connected neural networks            |  |  | |
+|  1 | course introduction, technical details     | Csabai István       |  | |
+|  2 | validation, machine learning methods       | Ribli Dezső         |  | |
+|  3 | fully connected neural networks            | Pataki Bálint Ármin |  | |
 |  4 | backpropagation, optimizers                |  |  | |
 |  5 | convolution, convolutional neural networks |  |  | |
 |  6 | CNN architectures, deep learning tricks    |  |  | |

@@ -27,7 +27,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 | week        | topics          | instructor | materials | assignments |
 |:-------------|:------------------|:------|:------|:------|
-|  1 | course introduction, technical details     | Csabai István       | [info](https://github.com/patbaa/physdl/blob/master/slides/01_technical_info.pdf) | |
+|  1 | course introduction, technical details     | Csabai István       | [info](https://github.com/patbaa/physdl/blob/master/slides/01_technical_info.pdf) [DL introduction](https://github.com/patbaa/physdl/blob/master/slides/01_deeplearning_intro.pdf) | |
 |  2 | validation, machine learning methods       | Ribli Dezső         |  | |
 |  3 | fully connected neural networks            | Pataki Bálint Ármin |  | |
 |  4 | backpropagation, optimizers                |  |  | |

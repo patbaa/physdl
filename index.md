@@ -53,3 +53,4 @@ During the semester there will be two Kaggle in-class challenges. Grades will be
  - [CS231n Convolutional Neural Networks for Visual Recognition](http://cs231n.stanford.edu/)
  - [Deep Learning book](http://www.deeplearningbook.org/)
  - [Deep Learning Specialization, Coursera](https://www.coursera.org/specializations/deep-learning)
+ - [An Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/)

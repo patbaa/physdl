@@ -47,8 +47,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 # Grading
 During the semester there will be two Kaggle in-class challenges. Grades will be recieved by successful participation in them.
-- Fist kaggle challenge: https://www.kaggle.com/c/photometric-redshift-estimation-2019
-- Participation link: https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d
+- Fist kaggle challenge: https://www.kaggle.com/c/photometric-redshift-estimation-2019 [Participation link](https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d)
 
 # Materials
  - [Python for Data Science, Coursera](https://www.coursera.org/learn/python-for-applied-data-science)

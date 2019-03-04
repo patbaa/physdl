@@ -27,9 +27,9 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 | week        | topics          | instructor | materials | assignments |
 |:-------------|:------------------|:------|:------|:------|
-|  1 | course introduction, technical details     | Csabai István       | [info](https://github.com/patbaa/physdl/blob/master/slides/01_technical_info.pdf), [DL introduction](https://github.com/patbaa/physdl/blob/master/slides/01_deeplearning_intro.pdf) | |
+|  1 | course introduction, technical details     | Csabai István       | [info](http://patbaa.web.elte.hu/physdl/01_technical_info.pdf), [DL introduction](http://patbaa.web.elte.hu/physdl/01_deeplearning_intro.pdf) | |
 |  2 | validation, machine learning methods       | Ribli Dezső         | [ML intro](http://dkrib.web.elte.hu/deeplearning/course_slides/machine_learning_intro.pdf),  [ML model zoo notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/machine_learning_model_zoo.ipynb),  [regularization notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/regluarization.ipynb)| |
-|  3 | fully connected neural networks            | Pataki Bálint Ármin |  | |
+|  3 | fully connected neural networks            | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/03_fully_connected.pdf), [first NN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/03/fully_connected.ipynb) | |
 |  4 | backpropagation, optimizers                |  |  | |
 |  5 | convolution, convolutional neural networks |  |  | |
 |  6 | CNN architectures, deep learning tricks    |  |  | |

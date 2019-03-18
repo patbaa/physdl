@@ -25,15 +25,15 @@ In recent years we witnessed a huge development in machine learning, especially 
 # SYLLABUS (planned)
 ### to be updated
 
-| week        | topics          | instructor | materials | assignments |
+| week        | topics          | instructor | materials | date |
 |:-------------|:------------------|:------|:------|:------|
-|  1 | course introduction, technical details     | Csabai István       | [info](http://patbaa.web.elte.hu/physdl/01_technical_info.pdf), [DL introduction](http://patbaa.web.elte.hu/physdl/01_deeplearning_intro.pdf) | |
-|  2 | validation, machine learning methods       | Ribli Dezső         | [ML intro](http://dkrib.web.elte.hu/deeplearning/course_slides/machine_learning_intro.pdf),  [ML model zoo notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/machine_learning_model_zoo.ipynb),  [regularization notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/regluarization.ipynb)| |
-|  3 | fully connected neural networks            | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/03_fully_connected.pdf), [first NN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/03/fully_connected.ipynb) | |
-|  4 | more about neural networks                | Ribli Dezső | [PDF](http://dkrib.web.elte.hu/deeplearning/course_slides/04_nn.pdf)   | |
-|  5 | convolution, convolutional neural networks | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_cnn.pdf) | |
-|  6 | CNN architectures, deep learning tricks    |  |  | |
-|  7 | CNN implementation in Keras                |  |  | |
+|  1 | course introduction, technical details     | Csabai István       | [info](http://patbaa.web.elte.hu/physdl/01_technical_info.pdf), [DL introduction](http://patbaa.web.elte.hu/physdl/01_deeplearning_intro.pdf) | 2019.02.18. |
+|  2 | validation, machine learning methods       | Ribli Dezső         | [ML intro](http://dkrib.web.elte.hu/deeplearning/course_slides/machine_learning_intro.pdf),  [ML model zoo notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/machine_learning_model_zoo.ipynb),  [regularization notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/regluarization.ipynb)| 2019.02.25. |
+|  3 | fully connected neural networks            | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/03_fully_connected.pdf), [first NN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/03/fully_connected.ipynb) | 2019.03.04. |
+|  4 | more about neural networks                | Ribli Dezső | [PDF](http://dkrib.web.elte.hu/deeplearning/course_slides/04_nn.pdf)   | 2019.03.11. |
+|  5 | convolution, convolutional neural networks | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_cnn.pdf), [first CNN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/05/cnn.ipynb) | 2019.03.18. |
+|  6 | CNN architectures, deep learning tricks    |  |  | 2019.03.25. |
+|  7 | CNN implementation in Keras                |  |  | 2019.04.01. |
 |  8 | Adversarial examples                       |  |  | |
 |  9 | Object detection                           |  |  | |
 | 10 | word embedding                             |  |  | |

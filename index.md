@@ -31,7 +31,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  2 | validation, machine learning methods       | Ribli Dezső         | [ML intro](http://dkrib.web.elte.hu/deeplearning/course_slides/machine_learning_intro.pdf),  [ML model zoo notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/machine_learning_model_zoo.ipynb),  [regularization notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/regluarization.ipynb)| |
 |  3 | fully connected neural networks            | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/03_fully_connected.pdf), [first NN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/03/fully_connected.ipynb) | |
 |  4 | more about neural networks                | Ribli Dezső | [PDF](http://dkrib.web.elte.hu/deeplearning/course_slides/04_nn.pdf)   | |
-|  5 | convolution, convolutional neural networks |  |  | |
+|  5 | convolution, convolutional neural networks | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_cnn.pdf) | |
 |  6 | CNN architectures, deep learning tricks    |  |  | |
 |  7 | CNN implementation in Keras                |  |  | |
 |  8 | Adversarial examples                       |  |  | |

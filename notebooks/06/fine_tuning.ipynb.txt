@@ -1,0 +1,903 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "fine_tuning.ipynb",
+      "version": "0.3.2",
+      "provenance": [],
+      "collapsed_sections": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python2",
+      "display_name": "Python 2"
+    },
+    "accelerator": "GPU"
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/fine_tuning.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "M74XJvvV9Gyz",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "# What if you don't have 1 million images to train on?\n",
+        "\n",
+        "----\n",
+        "\n",
+        "Most often than not, your problem will have different stuff than the Imagenet 1k or 5k or 22k categories. Do you have to collect another 1 million examples to achieve similarly good results? Luckily, NOT!\n",
+        "\n",
+        "Parameters learned on the million images of Imagenet can help in other tasks too. This is called **transfer learning**.\n",
+        "\n",
+        "### Using Imagenet parameters\n",
+        "\n",
+        "Think about this: The low level features of images should be pretty similar on pictures about different objects. Therefore starting from something learned on Imagenet could be useful for other categories too!\n",
+        "\n",
+        "Also the model weights obtained on Imagenet are probably closer to the best solution than a random initilization right? It should not be worse than that.\n",
+        "\n",
+        "\n",
+        "#### Feature extraction\n",
+        "\n",
+        "A basic solution would be to use a representation created by an Imagenet pretrained model as input instead of the original inputs. Obviously not the predictions, but something intermediate e.g.: last convolutional layers.\n",
+        "\n",
+        "This can be essentially implemented by 'freezing' the parameters of layers. You can be set Keras and other libraries not to update params of specific layers during. Probably you want to freeze the first some convolutional layers, and train the rest. This might be reasonable to avoid overfitting.\n",
+        "\n",
+        "You can also use different classifiers on top of these features, after simply saving them.\n",
+        "\n",
+        "#### Complete fine-tuning\n",
+        "\n",
+        "Instead of freezing some layers you can also update the whole model. Basically start from an Imagenet trained model, change only the classifier layer and train a bit ('fine-tune') your dataset.\n",
+        "\n",
+        "----\n"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "GwsbdJkA9Gy3",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## Example dataset: Cats vs Dogs\n",
+        "\n",
+        "![catvsdogs](https://storage.googleapis.com/kaggle-competitions/kaggle/5441/logos/front_page.png)\n",
+        "\n",
+        "ILSVRC has cats and dogs, but many many kinds. Maybe you could add up predictions for cats and dogs, but actually we can do better.\n",
+        "\n",
+        "\n",
+        "25k images, cats/dogs\n",
+        "\n",
+        "https://www.kaggle.com/c/dogs-vs-cats\n"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "D1wfk8Uv-bFv",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### Download data from kaggle"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "yDZhJ3KI-fwx",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://www.kfki.hu/~berenyi/NN/cats_dogs.zip"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "mOe7uOSF_MIi",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!unzip cats_dogs.zip"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "7qyrh7qy_PbX",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!ls"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "LRjVARpw9Gy7",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "%pylab inline"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "5nCo9-gF9G0T",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "I split to train/validation with ~30% of the data in validation."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "-A4CA27U9G0V",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "from glob import glob\n",
+        "cats = sorted(glob('cats_dogs/train/cat/*.jpg'))\n",
+        "dogs = sorted(glob('cats_dogs/train/dog/*.jpg'))\n",
+        "print 'training:',len(cats),len(dogs)\n",
+        "\n",
+        "cats = sorted(glob('cats_dogs/validation/cat/*.jpg'))\n",
+        "dogs = sorted(glob('cats_dogs/validation/dog/*.jpg'))\n",
+        "print 'validation:',len(cats),len(dogs)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "tJcw8ciZ9G0f",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### Let's check out some images"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "rtbYtT9l9G0g",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "from PIL import Image"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "rp_2biBf9G0n",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "#### They are mostly easy"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "goEC8x-R9G0q",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open(cats[0])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "2hevvRkx9G0y",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Some are slightly harder"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "dxYHZtac9G0z",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.1625.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "3G38rjYQANGV",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open(cats[42])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "x1ntW4TdCiVf",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.1936.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "9ngobEq9DjNf",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.10504.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "ouQAVc0ZDrG0",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.10539.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "oXaEvBIxGkvX",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.1381.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "7hS8yexJFRg5",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.1259.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "y1VAxcz8H9-c",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.1895.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "u1hthRnDF1DO",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.1308.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "2qWFnMTFDJvG",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### Some impossible :)"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "caRdDwJtC6Yn",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.10181.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "GnmlYq4zDGYh",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.10266.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "8l0vxuXn9G1a",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## And some just plain wrong ..."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "8XOBCSiOAHYU",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open(cats[35])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "KdfY2VyJD8QF",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/cat/cat.10712.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "N7DqtzFnE806",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.1043.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "FDm3Zl9pWuws",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.10801.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "g5TWS0f1Im-W",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.10161.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "uf6WK-mGIzY6",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.10237.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "CUBoF09OJAV4",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.10401.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "fBuYMPblXsM0",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "# My favourites"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "jbJ5LiCzW3EG",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.10842.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "ldCljcnXHvaw",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "Image.open('cats_dogs/validation/dog/dog.1773.jpg')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "0nJS3NqQ9G1h",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "#### Do not load 25000 images to memory, create a data generator for training"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "XiMoYUyA9G1i",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "from keras.preprocessing.image import ImageDataGenerator\n",
+        "\n",
+        "# Maybe I could use a preprocessing_function to use vgg16 normalization\n",
+        "# but there I got a bug in preprecessing_function whatever \n",
+        "def my_preproc(im):\n",
+        "  \"\"\"Preprocess image like orignal VGG16.\"\"\"\n",
+        "  im = im[...,[2,1,0]]  # rgb -> bgr\n",
+        "  im = im.astype('float64')  # to float\n",
+        "  im[:,:,0] -= 103.939  # color mean in training set\n",
+        "  im[:,:,1] -= 116.779  # color mean in training set\n",
+        "  im[:,:,2] -= 123.68  # color mean in training set\n",
+        "  return im\n",
+        "\n",
+        "# teh generators\n",
+        "train_datagen = ImageDataGenerator(preprocessing_function = my_preproc)\n",
+        "valid_datagen = ImageDataGenerator(preprocessing_function = my_preproc)\n",
+        "\n",
+        "# the 'flow's\n",
+        "train_generator = train_datagen.flow_from_directory(\n",
+        "        'cats_dogs/train',\n",
+        "        target_size=(224, 224),\n",
+        "        batch_size=64,\n",
+        "        class_mode='binary')\n",
+        "\n",
+        "valid_generator = valid_datagen.flow_from_directory(\n",
+        "        'cats_dogs/validation',\n",
+        "        target_size=(224, 224),\n",
+        "        batch_size=64,\n",
+        "        class_mode='binary')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "VlUrM7OD9G1l",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "---\n",
+        "\n",
+        "\n",
+        "## Use the Vgg16 model\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "- 2nd place in ILSVRC 2014\n",
+        "- the best single model of the competition ( more tricks in the winner )\n",
+        "- [arxiv paper](https://arxiv.org/abs/1409.1556)\n",
+        "\n",
+        "A few architectrural changes compared to LeNet.\n",
+        "\n",
+        "* ReLU non-linearity instead of tanh or sigmoid\n",
+        "* move to 3x3 conv ( and 2 convolutions per blocks instead of 1 ) ('deeper')\n",
+        "* larger images -> repeat blocks multiple times to achieve large FOV for last conv untis  ('deeper')\n",
+        "* richer/more data: more filters ('wider' model)\n",
+        "* And a regularization layer: Dropout ([link to orignal paper](www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf))\n",
+        "    * during training randomly knock out a fraction of neurons (0 output)\n",
+        "    * during testing switch all on ( multiply outputs with the dropout probabilty )\n",
+        "    * the results is something like an 'ensemble' of slightly different networks\n",
+        "    * it's popularity has declined but still used in the best \"inception\" networks \n",
+        "\n",
+        "\n",
+        "(Note the functional API.)\n",
+        "\n",
+        "\n",
+        "#### This time produce intermediate layer activations too!"
+      ]
+    },
+    {
+      "metadata": {
+        "scrolled": false,
+        "id": "6eNw725Q9G1m",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "from keras.models import Model\n",
+        "from keras.layers import Conv2D, MaxPooling2D, Input\n",
+        "from keras.layers import Dense, Dropout, Flatten\n",
+        "\n",
+        "def VGG16():\n",
+        "    \"\"\"\n",
+        "    Return a vgg16 model.\n",
+        "    \n",
+        "    Keras has a built in vgg16 model which omits Dropouts.\n",
+        "    I don't want to omit the dropouts as they are part of\n",
+        "    the original vgg16 model. therefore I have to define the\n",
+        "    vgg16 model myself.\n",
+        "    \"\"\"\n",
+        "    img_input = Input(shape=(224,224,3),name='input')\n",
+        "\n",
+        "    # Block 1\n",
+        "    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1')(img_input)\n",
+        "    b1c2 = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(b1c2)\n",
+        "\n",
+        "    # Block 2\n",
+        "    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)\n",
+        "    b2c2 = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(b2c2)\n",
+        "\n",
+        "    # Block 3\n",
+        "    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)\n",
+        "    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)\n",
+        "    b3c3 = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(b3c3)\n",
+        "\n",
+        "    # Block 4\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)\n",
+        "    b4c3 = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(b4c3)\n",
+        "\n",
+        "    # Block 5\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1')(x)\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2')(x)\n",
+        "    b5c3 = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(b5c3)\n",
+        "\n",
+        "    # Classification block\n",
+        "    x = Flatten(name='flatten')(x)\n",
+        "    x = Dropout(0.5,name='Dropout1')(x)\n",
+        "    x = Dense(4096, activation='relu', name='fc1')(x)\n",
+        "    x = Dropout(0.5,name='Dropout2')(x)\n",
+        "    x = Dense(4096, activation='relu', name='fc2')(x)\n",
+        "    x = Dense(1000, activation='softmax', name='predictions')(x)\n",
+        "\n",
+        "    vgg16 = Model(inputs=img_input, outputs=[x])\n",
+        "    \n",
+        "    return vgg16"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "dlOPPAMk9G1p",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "[Download model parameters from Keras official](https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5)\n",
+        "\n",
+        "\n",
+        "Load weights"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "FZkgJOHpFitV",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "yBywWDP09G1q",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "vgg16 = VGG16()  # initialize model\n",
+        "# load weights\n",
+        "vgg16.load_weights('vgg16_weights_tf_dim_ordering_tf_kernels.h5')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "OBFDP7Lh9G1t",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### Customize model: replace the last layer with a 2 class layer"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "7ebn6r0Y9G1u",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "vgg16.layers.pop()  # pop lastlayer\n",
+        "\n",
+        "# add one dense layer\n",
+        "inp = vgg16.input\n",
+        "out = vgg16.layers[-1].output\n",
+        "out = Dense(1, activation='sigmoid', name='predictions')(out)\n",
+        "\n",
+        "vgg16_2 = Model(inp, out)  # link i/o to mondel\n",
+        "\n",
+        "vgg16_2.summary()  # see it"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "RJ6Z2W-N9G1x",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## Train"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "EQmorg5J9G1y",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Use a simple SGD with momemtum."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "Lv_LgEql9G1z",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "# use a simple SGD \n",
+        "from keras import optimizers\n",
+        "sgd = optimizers.SGD(lr=0.001, decay=0, momentum=0.9, nesterov=True)\n",
+        "\n",
+        "# compile model\n",
+        "vgg16_2.compile(optimizer=sgd,loss='binary_crossentropy',metrics=['accuracy'])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "ASIHQ_V_9G11",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Define a step learning schedule. It drops 10x after one epoch."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "aF9Sxku-9G12",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "from keras.callbacks import LearningRateScheduler\n",
+        "def step_decay(epoch,base_lr=0.001,drop=0.1,epochs_drop=1.0):\n",
+        "    \"\"\"Helper for learning rate decay.\"\"\"\n",
+        "    lrate = base_lr * math.pow(drop,math.floor((epoch)/epochs_drop))\n",
+        "    return lrate"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "DfWDSZtT9G13",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Train it and validate it."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "PXgPT-5i9G14",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "# train and validate\n",
+        "vgg16_2.fit_generator(\n",
+        "        train_generator,\n",
+        "        steps_per_epoch=160,  # ~ 10000 examples per epoch\n",
+        "        epochs=3,\n",
+        "        validation_data=valid_generator,\n",
+        "        validation_steps=112,  # test on all validation images\n",
+        "        callbacks=[LearningRateScheduler(step_decay)])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "YRj_j3xF9G17",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "----\n",
+        "\n",
+        "\n",
+        "### That's it\n",
+        "\n",
+        "\n",
+        "In only 10 minutes we trained a more than 98% accurate classifier!\n",
+        "* Plus options: data augmentation (flips, crops ). During training and testing too!\n",
+        "* Average many models (VGG, Resnet, Inception, etc) for 20-30% error reductions.\n",
+        "\n",
+        "4 years ago, when vgg16 was the state of the art that would be good for a [2nd place on kaggle](https://www.kaggle.com/c/dogs-vs-cats/leaderboard). Now when a lot more models are available, you can do [slightly better](https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/leaderboard).\n",
+        "\n",
+        "\n",
+        "---"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "AAuvBo9x9G18",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "----\n",
+        "\n",
+        "\n",
+        "## Additional notes\n",
+        "\n",
+        "\n",
+        "#### Transfer learning is generalization\n",
+        "\n",
+        "Imagenet trained models not only generalize to the unseen test dataset from the same categories, but also other unseen image recognition problems too!\n",
+        "\n",
+        "#### Fine tuning is regularisation\n",
+        "\n",
+        "Fine tuning can be thought of as a regularization. You start from Imagenet and train only for a short time. Therefore the weights are restricted to be close to the originals. Also training error is not reduced compared to a from scratch overfitted model, but the validation error is lower!\n",
+        "\n",
+        "\n",
+        "#### Catastrophic forgetting\n",
+        "\n",
+        "If you train for too long on the new dataset, the parameters could go far from originals and can easily start to overfit and become worse!\n",
+        "\n",
+        "\n",
+        "#### Many many pretrained models are available\n",
+        "\n",
+        "Caffe library has the largest [Model zoo](https://github.com/BVLC/caffe/wiki/Model-Zoo) but Keras also features the most [important ones](https://keras.io/applications/)."
+      ]
+    }
+  ]
+}

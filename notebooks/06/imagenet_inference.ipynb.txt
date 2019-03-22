@@ -1,0 +1,797 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "imagenet_inference.ipynb",
+      "version": "0.3.2",
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "accelerator": "GPU"
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/imagenet_inference.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "EDN0G0Ne2mHn",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "# Using an Imagenet trained model\n",
+        "\n",
+        "----\n",
+        "\n",
+        "\n",
+        "Here we will show how to load a model trained on the 1.2 million images in ILSVRC, and use this model to make predictions on new images.\n",
+        "\n",
+        "\n",
+        "---"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "WGRoxomx2mHq",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "%pylab inline"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "yuVXgV-U2mH1",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "import keras\n",
+        "from keras.models import Model\n",
+        "from keras.layers import Conv2D, MaxPooling2D, Input\n",
+        "from keras.layers import Dense, Dropout, Flatten\n",
+        "from keras.applications.vgg16 import decode_predictions\n",
+        "\n",
+        "from PIL import Image"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "kWWOgTq42mH9",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## Define the  Vgg16 model\n",
+        "\n",
+        "\n",
+        "- 2nd place in ILSVRC 2014\n",
+        "- the best single model of the competition ( more tricks in the winner )\n",
+        "- [arxiv paper](https://arxiv.org/abs/1409.1556)\n",
+        "\n",
+        "A few architectrural changes compared to LeNet.\n",
+        "\n",
+        "* ReLU non-linearity instead of tanh or sigmoid\n",
+        "* move to 3x3 conv ( and 2 convolutions per blocks instead of 1 ) ('deeper')\n",
+        "* larger images -> repeat blocks multiple times to achieve large FOV for last conv untis  ('deeper')\n",
+        "* richer/more data: more filters ('wider' model)\n",
+        "* And a regularization layer: Dropout ([link to orignal paper](www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf))\n",
+        "    * during training randomly knock out a fraction of neurons (0 output)\n",
+        "    * during testing switch all on ( multiply outputs with the dropout probabilty )\n",
+        "    * the results is something like an 'ensemble' of slightly different networks\n",
+        "    * it's popularity has declined but still used in the best \"inception\" networks \n",
+        "\n",
+        "\n",
+        "Note the Keras functional API. Here you can find a  [guide](https://keras.io/getting-started/functional-api-guide/) "
+      ]
+    },
+    {
+      "metadata": {
+        "scrolled": false,
+        "id": "cEjYF7ak2mH_",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "def VGG16():\n",
+        "    \"\"\"\n",
+        "    Return a vgg16 model.\n",
+        "    \n",
+        "    Keras has a built in vgg16 model which omits Dropouts.\n",
+        "    I don't want to omit the dropouts as they are part of\n",
+        "    the original vgg16 model. therefore I have to define the\n",
+        "    vgg16 model myself.\n",
+        "    \"\"\"\n",
+        "    img_input = Input(shape=(224,224,3),name='input')\n",
+        "\n",
+        "    # Block 1\n",
+        "    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1')(img_input)\n",
+        "    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)\n",
+        "\n",
+        "    # Block 2\n",
+        "    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)\n",
+        "    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)\n",
+        "\n",
+        "    # Block 3\n",
+        "    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)\n",
+        "    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)\n",
+        "    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)\n",
+        "\n",
+        "    # Block 4\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)\n",
+        "\n",
+        "    # Block 5\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1')(x)\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2')(x)\n",
+        "    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3')(x)\n",
+        "    x = MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)\n",
+        "\n",
+        "    # Classification block\n",
+        "    x = Flatten(name='flatten')(x)\n",
+        "    x = Dropout(0.5,name='Dropout1')(x)\n",
+        "    x = Dense(4096, activation='relu', name='fc1')(x)\n",
+        "    x = Dropout(0.5,name='Dropout2')(x)\n",
+        "    x = Dense(4096, activation='relu', name='fc2')(x)\n",
+        "    x = Dense(1000, activation='softmax', name='predictions')(x)\n",
+        "\n",
+        "    vgg16 = Model(inputs=img_input, outputs=x)\n",
+        "    \n",
+        "    return vgg16"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "3aSLF-CH2mIG",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "[Download model parameters from Keras official](https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5)\n",
+        "\n",
+        "It was published originally by the authors of the model in caffe, and converted to Keras."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "1wmHNadc3vLi",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "MZjuDnWF2mII",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "vgg16 = VGG16()  # initialize model\n",
+        "# load weights\n",
+        "vgg16.load_weights('vgg16_weights_tf_dim_ordering_tf_kernels.h5')\n",
+        "vgg16.summary()  # just check it"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "mXe1gg7D2mIR",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## Define a prediction wrapper\n"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "z5-ebvHf2mIT",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "def predict1(model,img):\n",
+        "    \"\"\"Predict arbitrary image.\"\"\"\n",
+        "    # resize im to input size\n",
+        "    # aspect ratios are not respected here...\n",
+        "    # works well with instagram\n",
+        "    img = img.resize((224,224))  \n",
+        "    \n",
+        "    # turn to numpy array from PIL Image\n",
+        "    im = array(img)\n",
+        "    \n",
+        "    # watch out images were trained as BGR (opencv!)\n",
+        "    # PIL load images to rgb!!!\n",
+        "    im = im[...,[2,1,0]]\n",
+        "    \n",
+        "    # scale them as they did during training\n",
+        "    im = im.astype('float64')  # to float!\n",
+        "    im[:,:,0] -= 103.939  # color mean in training set\n",
+        "    im[:,:,1] -= 116.779  # color mean in training set\n",
+        "    im[:,:,2] -= 123.68  # color mean in training set\n",
+        "    \n",
+        "    im = im.reshape(-1,224,224,3)  # resize for 'batch'\n",
+        "    preds = model.predict(im)   # predict\n",
+        "    \n",
+        "    return preds"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "nzyIxKW92mIY",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "# See some examples\n",
+        "\n",
+        "- Watch out with google search images, that's exactly how the imagenet dataset was generated :)\n",
+        "- Uploaded today to instagram  (credit to \"whogivesafuck\"), surely not in imagenet training"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "Pvz-otww2mIZ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://raw.githubusercontent.com/riblidezso/wigner_dl_demo/master/k.jpg\n",
+        "img = Image.open('k.jpg')\n",
+        "print(img.size)\n",
+        "img"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "dwUAIy1h2mIf",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "preds = predict1(vgg16,img)\n",
+        "decode_predictions(preds)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "BWno_TI_2mIl",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Well done!"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "LyFJK_Wr2mIm",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "# Another \n",
+        "\n",
+        "- credit to \"little_reader93\""
+      ]
+    },
+    {
+      "metadata": {
+        "id": "ydLMNj2O2mIo",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://raw.githubusercontent.com/riblidezso/wigner_dl_demo/master/b.jpg\n",
+        "img = Image.open('b.jpg')\n",
+        "img"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "DQPjTLZC2mIs",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "preds = predict1(vgg16,img)\n",
+        "decode_predictions(preds)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "I-vCD9Oc2mIv",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Also"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "pYv5dkZX2mIw",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### What if the object is small?\n",
+        "\n",
+        "* credit to madam_pusteblume"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "5u42pcDV2mIx",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://raw.githubusercontent.com/riblidezso/wigner_dl_demo/master/g.jpg\n",
+        "img = Image.open('g.jpg')\n",
+        "img"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "_OlePdWz2mI1",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "img.resize((224,224))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "O9e2Zxh_2mI6",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "No good answers in top 5 :("
+      ]
+    },
+    {
+      "metadata": {
+        "id": "LZIkbZQ62mI7",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "preds = predict1(vgg16,img)\n",
+        "decode_predictions(preds)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "d3Z4SIza2mI-",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "decode_predictions(preds,top=20)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "Q2biUeb22mJA",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        " \n",
+        "## Multi crop predictions!\n",
+        "\n",
+        "Let's cut the image into crops and predict on each 'crop', and average the predictions."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "vzZ4Ryo42mJB",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "def predict_mc(model,img, stride=100):\n",
+        "    \"\"\"Multi crop predict image.\"\"\"\n",
+        "    # turn to numpy array from PIL Image\n",
+        "    im = array(img)\n",
+        "    \n",
+        "    # watch out images were trained as BGR (opencv!)\n",
+        "    # PIL load images to rgb!!!\n",
+        "    im = im[...,[2,1,0]]\n",
+        "    \n",
+        "    # scale them as they did during training\n",
+        "    im = array(img).astype('float64')\n",
+        "    im[:,:,0] -= 103.939\n",
+        "    im[:,:,1] -= 116.779\n",
+        "    im[:,:,2] -= 123.68\n",
+        "    \n",
+        "    # crops\n",
+        "    ims = []\n",
+        "    for yi in range(0,im.shape[0]-224,stride):\n",
+        "        for xi in range(0,im.shape[1]-224,stride):\n",
+        "            ims.append( im[yi:yi+224,xi:xi+224,:] )\n",
+        "    \n",
+        "    preds = model.predict(array(ims)) \n",
+        "    return preds"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "ejzYnwKi2mJD",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "%%time\n",
+        "preds = predict_mc(vgg16,img, stride=10)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "cztaLimr2mJF",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Getting better! There is a similar dog there."
+      ]
+    },
+    {
+      "metadata": {
+        "id": "MvF05Yqp2mJG",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "decode_predictions(array([preds.mean(axis=0)]))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "_sTPE99A2mJO",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## What if the input is not square?\n",
+        "\n",
+        "\n",
+        "Option 1: you might just resize it\n",
+        "- People try to avoid non isotropic resizing, altough that works reasonably well too!"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "CKsnGMrx2mJP",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "!wget https://raw.githubusercontent.com/riblidezso/wigner_dl_demo/master/c.jpg\n",
+        "img = Image.open('c.jpg')\n",
+        "img"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "eVFDJH2B2mJR",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "img.resize((224,224))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "8FAZB1FV2mJU",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Actually works! :) (Pembroke and Cardigan are corgi types!)"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "FJI9bn0R2mJV",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "preds = predict1(vgg16,img)\n",
+        "decode_predictions(preds)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "TWD1kme62mJY",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### Multi crop could also handle this!"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "DGH4g_vD2mJZ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "%%time\n",
+        "preds = predict_mc(vgg16,img,stride=100)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "swcH-a_q2mJc",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Corgi order changed, idk :)"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "LpNwkLKQ2mJc",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "decode_predictions(array([preds.mean(axis=0)]))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "i22cyU6n2mJe",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## Do they work upside down?\n",
+        "\n"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "js7sUSJc2mJf",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "im = array(img)\n",
+        "im = flipud(im)\n",
+        "img = Image.fromarray(im)\n",
+        "img"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "ToQx6f0N2mJi",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "preds = predict1(vgg16,img)\n",
+        "decode_predictions(preds)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "VEVsmtxT2mJm",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Less well!\n",
+        "\n",
+        "(Note the lower confidence too!)"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "bXpd4iTu2mJn",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## Do they work left right flipped?\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "sz-PrNaF2mJn",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "img = Image.open('c.jpg')\n",
+        "im = array(img)\n",
+        "im = fliplr(im)\n",
+        "img = Image.fromarray(im)\n",
+        "img"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "XQbyLdl02mJq",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "cell_type": "code",
+      "source": [
+        "preds = predict1(vgg16,img)\n",
+        "decode_predictions(preds)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "id": "wi9jJRz_2mJs",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "Of course they do :) (they were trained to)"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "JUkJUpLI2mJt",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "### Further tricks:\n",
+        "\n",
+        "- Adding horizontal flips\n",
+        "- Multi scale evaluation"
+      ]
+    },
+    {
+      "metadata": {
+        "id": "w3NdlFEa2mJt",
+        "colab_type": "text"
+      },
+      "cell_type": "markdown",
+      "source": [
+        "## You might wonder, why use 224x224 images?\n",
+        "\n",
+        "---\n",
+        "\n",
+        "\n",
+        "How large an object needs to be to be recognised? Do you really need 24MP images?\n",
+        "\n",
+        "224x224 is probably enough for anything if it fills the image. \n",
+        "\n",
+        "ILSRVC images usually contain pretty large objects which almost fill the image.\n",
+        "\n",
+        "---\n",
+        "\n",
+        "\n",
+        "( Images in ILSVRC have characteristic size of 300-600 pixels. )\n",
+        "\n",
+        "And they don't really use 224x224:\n",
+        "\n",
+        "During training they first resize to a larger size and crop smaller squares from the larger image. (Resize to smaller size = 256, and use 224x224 crops on it.)\n",
+        "And that's how you test too.\n",
+        "\n",
+        "And actually you can use larger. 299 (inception), 450 (darknet19), 512 (Baidu).\n",
+        "\n",
+        "\n",
+        "---\n",
+        "\n",
+        "All in all imagenet trained models are good at recognizing objects which are around 100-200 pixel in size.\n",
+        "\n",
+        "Try to predict images where the object size is as large as possible, but no larger than 200x200.\n",
+        "\n",
+        "---"
+      ]
+    }
+  ]
+}

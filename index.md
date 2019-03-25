@@ -22,6 +22,11 @@ In recent years we witnessed a huge development in machine learning, especially 
  - Pataki Bálint Ármin
  - Bagoly Attila (former)
 
+# News
+ - The deadline for the first [Kaggle challenge](https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d) is the end of March.
+ - If github wouldn't render the notebooks you may try [here](https://nbviewer.jupyter.org/github/patbaa/physdl/tree/master/notebooks/) via nbviewer. Or you can also download the notebooks and open them locally.
+ 
+
 # SYLLABUS (planned)
 ### to be updated
 

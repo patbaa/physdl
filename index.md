@@ -38,7 +38,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  4 | more about neural networks                | Ribli Dezső | [PDF](http://dkrib.web.elte.hu/deeplearning/course_slides/04_nn.pdf)   | 2019.03.11. |
 |  5 | convolution, convolutional neural networks | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_cnn.pdf), [first CNN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/05/cnn.ipynb) | 2019.03.18. |
 |  6 | Practical computer vision, inference with pre trained models and fine tuning    | Ribli Dezső | [inference notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/imagenet_inference.ipynb),  [fine tuning notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/fine_tuning.ipynb)  | 2019.03.25. |
-|  7 | CNN implementation in Keras                |  |  | 2019.04.01. |
+|  7 | CNN architectures annd visualization                | Ribli Dezső | [architectures notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/architectures.ipynb), [visualization notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/model_vis.ipynb), [interesting link](https://distill.pub/2018/building-blocks/) | 2019.04.01. |
 |  8 | Adversarial examples                       |  |  | |
 |  9 | Object detection                           |  |  | |
 | 10 | word embedding                             |  |  | |

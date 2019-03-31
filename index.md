@@ -23,6 +23,7 @@ In recent years we witnessed a huge development in machine learning, especially 
  - Bagoly Attila (former)
 
 # News
+ - Second [Kaggle challenge](https://www.kaggle.com/t/21783f42bab34fc79e7df8601fff3b33) is launched. The deadline is 19th May.
  - The deadline for the first [Kaggle challenge](https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d) is the end of March.
  - If github wouldn't render the notebooks you may try [here](https://nbviewer.jupyter.org/github/patbaa/physdl/tree/master/notebooks/) via nbviewer. Or you can also download the notebooks and open them locally.
  
@@ -39,7 +40,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  5 | convolution, convolutional neural networks | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_cnn.pdf), [first CNN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/05/cnn.ipynb) | 2019.03.18. |
 |  6 | Practical computer vision, inference with pre trained models and fine tuning    | Ribli Dezső | [inference notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/imagenet_inference.ipynb),  [fine tuning notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/fine_tuning.ipynb)  | 2019.03.25. |
 |  7 | CNN architectures annd visualization                | Ribli Dezső | [architectures notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/architectures.ipynb), [visualization notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/model_vis.ipynb), [interesting link](https://distill.pub/2018/building-blocks/) | 2019.04.01. |
-|  8 | Adversarial examples                       |  |  | |
+|  8 | Adversarial examples                       | Pataki Bálint Ármin |  | 2019.04.08. |
 |  9 | Object detection                           |  |  | |
 | 10 | word embedding                             |  |  | |
 | 11 | face recognition                           |  |  | |
@@ -54,6 +55,8 @@ In recent years we witnessed a huge development in machine learning, especially 
 During the semester there will be two Kaggle in-class challenges. Grades will be recieved by successful participation in them.
 - [Fist kaggle challenge](https://www.kaggle.com/c/photometric-redshift-estimation-2019)
   - It's a limited competition: [Participation link](https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d)
+- [Second kaggle challenge](https://www.kaggle.com/c/sportify-physdl)
+  - It's a limited competition: [Participation link](https://www.kaggle.com/t/21783f42bab34fc79e7df8601fff3b33)
 
 # Materials
  - [Python for Data Science, Coursera](https://www.coursera.org/learn/python-for-applied-data-science)

@@ -41,7 +41,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  6 | Practical computer vision, inference with pre trained models and fine tuning    | Ribli Dezső | [inference notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/imagenet_inference.ipynb),  [fine tuning notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/fine_tuning.ipynb)  | 2019.03.25. |
 |  7 | Modern CNN architectures              | Ribli Dezső | [architectures notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/architectures.ipynb) | 2019.04.01. |
 |  8 | Adversarial examples                       | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/08_adversarial.pdf), [notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/08/adversarial.ipynb) | 2019.04.08. |
-|  9 | object detection, CNN visualization           | Ribli Dezső |  | 2019.04.15. |
+|  9 | object detection, CNN visualization           | Ribli Dezső | [slides](http://dkrib.web.elte.hu/deeplearning/course_slides/detseg.pdf) | 2019.04.15. |
 | 10 | NLP, word2vec                           | Pataki Bálint Ármin |  | 2019.04.29. |
 | 11 | face recognition                           |  |  | |
 | 12 | Generative Adversarial Networks            |  |  | |

@@ -43,7 +43,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  8 | Adversarial examples                       | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/08_adversarial.pdf), [notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/08/adversarial.ipynb) | 2019.04.08. |
 |  9 | object detection, segmentation          | Ribli Dezső | [slides](http://dkrib.web.elte.hu/deeplearning/course_slides/detseg.pdf) | 2019.04.15. |
 | 10 | NLP, word2vec                           | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/10_NLP.pdf), [w2v_train](https://github.com/patbaa/physdl/blob/master/notebooks/10/train_word2vec_on_wikipedia_corpus.ipynb), [embeddings](https://github.com/patbaa/physdl/blob/master/notebooks/10/word2vec_application.ipynb)  | 2019.04.29. |
-| 11 | Recurrent Neural Networks                  |  |  | 2019.05.06. |
+| 11 | Sequential models, Recurrent Neural Networks                  | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/11_RNN.pdf), [LSTM notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/11/LSTM.ipynb) | 2019.05.06. |
 | 12 | Generative Adversarial Networks            |  |  | |
 
 # PREREQUISITES

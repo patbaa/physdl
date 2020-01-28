@@ -25,7 +25,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 # News
  - register to [Kaggle](https://www.kaggle.com/)
- - please fill this form (to match Kaggle usernames and Neptun codes): https://docs.google.com/forms/d/e/1FAIpQLSe03Mx6xKUo1HD46aaU1WtlxbYvU_kBF9bXEkW1mmkQxvl-Yg/viewform?usp=sf_link
+ - please fill [this form](https://docs.google.com/forms/d/e/1FAIpQLSe03Mx6xKUo1HD46aaU1WtlxbYvU_kBF9bXEkW1mmkQxvl-Yg/viewform?usp=sf_link) (to match Kaggle usernames and Neptun codes).
 
 # SYLLABUS
 ### to be updated

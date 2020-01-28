@@ -3,14 +3,14 @@ layout: default
 ---
 
 # Course info
-In recent years we witnessed a huge development in machine learning, especially in deep learning which drives a new technological revolution. These models improve searches, apps, social media and open new doors in medicine, automation, self-driving cars, drones and almost all fields of science. In this introductory deep learning class students will learn about neural networks, objectives, optimization algorithms and different architectures. During the semester students will work on multiple projects: 2 smaller projects, where students try out different algorithms and architectures. In the projects the focus will be on scientific applications of deep learning, for example application in drug discovery, weather prediction and astronomy. To successfully complete the class, prior knowledge in python and numpy (or the willing to learn it fast from online courses) is required. In course of the class students will learn about and will get comfortable with popular deep learning frameworks, mainly Keras.
+In recent years we witnessed a huge development in machine learning, especially in deep learning which drives a new technological revolution. These models improve searches, apps, social media and open new doors in medicine, automation, self-driving cars, drones and almost all fields of science. In this introductory deep learning class students will learn about neural networks, objectives, optimization algorithms and different architectures. During the semester students will work on multiple projects: 2 smaller projects, where students try out different algorithms and architectures. To successfully complete the class, prior knowledge in Python (numpy, pandas, matplotlib) is required. During the course the students will learn about and will get comfortable with popular deep learning frameworks, mainly Keras and Tensorflow.
 
 # Technical details:
 - Neptun: deeplea17m
 - Language: Hungarian (slides and the materials in English)
-- Start: 2019.02.18.
-- Time: 9:00 - 10:00
-- Location: 0.81 Ortvay, North building
+- Start: 2020.02.14.
+- Time: 13:00-14:00
+- Location: 0.79 Jánossy Lajos room, North building
 
 # Questions, problems:
 - Use [issues](https://guides.github.com/features/issues/) on the course's [GitHub page](https://github.com/patbaa/physdl/)
@@ -18,45 +18,38 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 # Course staff
  - Csabai István
- - Ribli Dezső
+ - Olar Alex
  - Pataki Bálint Ármin
  - Bagoly Attila (former)
+ - Ribli Dezső (former)
 
 # News
- - Second [Kaggle challenge](https://www.kaggle.com/t/21783f42bab34fc79e7df8601fff3b33) is launched. The deadline is 19th May.
- - The deadline for the first [Kaggle challenge](https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d) is the end of March.
- - If github wouldn't render the notebooks you may try [here](https://nbviewer.jupyter.org/github/patbaa/physdl/tree/master/notebooks/) via nbviewer. Or you can also download the notebooks and open them locally.
- 
 
-# SYLLABUS (planned)
+
+# SYLLABUS
 ### to be updated
 
 | week        | topics          | instructor | materials | date |
 |:-------------|:------------------|:------|:------|:------|
-|  1 | course introduction, technical details     | Csabai István       | [info](http://patbaa.web.elte.hu/physdl/01_technical_info.pdf), [DL introduction](http://patbaa.web.elte.hu/physdl/01_deeplearning_intro.pdf) | 2019.02.18. |
-|  2 | machine learning       | Ribli Dezső         | [ML intro](http://dkrib.web.elte.hu/deeplearning/course_slides/machine_learning_intro.pdf),  [ML model zoo notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/machine_learning_model_zoo.ipynb),  [regularization notebook](https://github.com/patbaa/physdl/blob/master/notebooks/02/regluarization.ipynb)| 2019.02.25. |
-|  3 | fully connected neural networks            | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/03_fully_connected.pdf), [first NN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/03/fully_connected.ipynb) | 2019.03.04. |
-|  4 | more about neural networks                | Ribli Dezső | [PDF](http://dkrib.web.elte.hu/deeplearning/course_slides/04_nn.pdf)   | 2019.03.11. |
-|  5 | convolution, convolutional neural networks | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_cnn.pdf), [first CNN notebook](https://github.com/patbaa/physdl/blob/master/notebooks/05/cnn.ipynb) | 2019.03.18. |
-|  6 | Practical computer vision, inference with pre trained models and fine tuning    | Ribli Dezső | [inference notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/imagenet_inference.ipynb),  [fine tuning notebook](https://colab.research.google.com/github/riblidezso/wigner_dl_demo/blob/master/fine_tuning.ipynb)  | 2019.03.25. |
-|  7 | Modern CNN architectures              | Ribli Dezső | [architectures notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/architectures.ipynb) | 2019.04.01. |
-|  8 | Adversarial examples                       | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/08_adversarial.pdf), [notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/08/adversarial.ipynb) | 2019.04.08. |
-|  9 | object detection, segmentation          | Ribli Dezső | [slides](http://dkrib.web.elte.hu/deeplearning/course_slides/detseg.pdf) | 2019.04.15. |
-| 10 | NLP, word2vec                           | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/10_NLP.pdf), [w2v_train](https://github.com/patbaa/physdl/blob/master/notebooks/10/train_word2vec_on_wikipedia_corpus.ipynb), [embeddings](https://github.com/patbaa/physdl/blob/master/notebooks/10/word2vec_application.ipynb)  | 2019.04.29. |
-| 11 | Sequential models, Recurrent Neural Networks                  | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/11_RNN.pdf), [LSTM notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/11/LSTM.ipynb) | 2019.05.06. |
-| 12 | Visualization, self-supervised learning, physics           | Ribli Dezső | [slides](http://dkrib.web.elte.hu/deeplearning/course_slides/viz_selfsup_games_physics.pdf) [notebook](https://colab.research.google.com/github/patbaa/physdl/blob/master/notebooks/07/model_vis.ipynb)| 2019.05.13. |
+|  1 | Course introduction, technical details         | Csabai István       | TBD | 2020.02.14. |
+|  2 | Machine learning: ideas, concepts              | Pataki Bálint Ármin | TBD | 2020.02.21. |
+|  3 | Machine learning model zoo & examples          | Pataki Bálint Ármin | TBD | 2020.02.28. |
+|  4 | Fully connected neural networks                | Pataki Bálint Ármin | TBD | 2020.03.06. |
+|  5 | Convolutional neural networks                  | Pataki Bálint Ármin | TBD | 2020.03.13. |
+|  6 | Practical CNN, pre-trained models              | Pataki Bálint Ármin | TBD | 2020.03.20. |
+|  7 | CNN visualization, self-supervised learning    | Pataki Bálint Ármin | TBD | 2020.03.27. |
+|  8 | Modern CNN architectures                       | Olar Alex           | TBD | 2020.04.03. |
+|  9 | Adversarial examples, GANs                     | Pataki Bálint Ármin | TBD | 2020.04.17. |
+| 10 | Object detection, segmentation                 | Olar Alex           | TBD | 2020.04.24. |
+| 11 | Sequential models, recurrent neural networks   | Pataki Bálint Ármin | TBD | 2020.05.15. |
 
 # PREREQUISITES
  - basic linear algebra
  - basic probability and statistics
- - Python
+ - Python (numpy, pandas, matplotlib)
 
 # Grading
-During the semester there will be two Kaggle in-class challenges. Grades will be recieved by successful participation in them.
-- [Fist kaggle challenge](https://www.kaggle.com/c/photometric-redshift-estimation-2019)
-  - It's a limited competition: [Participation link](https://www.kaggle.com/t/5f7d3f26e4714aea9692b185653da35d)
-- [Second kaggle challenge](https://www.kaggle.com/c/sportify-physdl)
-  - It's a limited competition: [Participation link](https://www.kaggle.com/t/21783f42bab34fc79e7df8601fff3b33)
+During the semester there will be two Kaggle in-class challenges. Grades will be recieved by successful participation in them. For detailed description of the grading system, please visit the technical details slides.
 
 # Materials
  - [Python for Data Science, Coursera](https://www.coursera.org/learn/python-for-applied-data-science)

@@ -32,7 +32,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 | week        | topics          | instructor | materials | date |
 |:-------------|:------------------|:------|:------|:------|
-|  1 | Course introduction, technical details         | Csabai István       | TBD | 2020.02.14. |
+|  1 | Course introduction, technical details         | Csabai István       | [intro](http://patbaa.web.elte.hu/physdl/01_intro.pdf), [requirements](http://patbaa.web.elte.hu/physdl/01_requirements.pdf) | 2020.02.14. |
 |  2 | Machine learning: ideas, concepts              | Pataki Bálint Ármin | TBD | 2020.02.21. |
 |  3 | Machine learning model zoo & examples          | Pataki Bálint Ármin | TBD | 2020.02.28. |
 |  4 | Fully connected neural networks                | Pataki Bálint Ármin | TBD | 2020.03.06. |

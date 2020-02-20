@@ -26,6 +26,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 # News
  - register to [Kaggle](https://www.kaggle.com/)
  - please fill [this form](https://docs.google.com/forms/d/e/1FAIpQLSe03Mx6xKUo1HD46aaU1WtlxbYvU_kBF9bXEkW1mmkQxvl-Yg/viewform?usp=sf_link) (to match Kaggle usernames and Neptun codes).
+ - First Kaggle challenge is available through [this link](https://www.kaggle.com/t/93653e153ffb4114b96034c21010bc6e). It is a limited competition, so you can download the data only via this link.
 
 # SYLLABUS
 ### to be updated
@@ -33,7 +34,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 | week        | topics          | instructor | materials | date |
 |:-------------|:------------------|:------|:------|:------|
 |  1 | Course introduction, technical details         | Csabai István       | [intro](http://patbaa.web.elte.hu/physdl/01_intro.pdf), [requirements](http://patbaa.web.elte.hu/physdl/01_requirements.pdf) | 2020.02.14. |
-|  2 | Machine learning: ideas, concepts              | Pataki Bálint Ármin | TBD | 2020.02.21. |
+|  2 | Machine learning: ideas, concepts              | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/02_ml_intro.pdf) | 2020.02.21. |
 |  3 | Machine learning model zoo & examples          | Pataki Bálint Ármin | TBD | 2020.02.28. |
 |  4 | Fully connected neural networks                | Pataki Bálint Ármin | TBD | 2020.03.06. |
 |  5 | Convolutional neural networks                  | Pataki Bálint Ármin | TBD | 2020.03.13. |
@@ -51,6 +52,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 
 # Grading
 During the semester there will be two Kaggle in-class challenges. Grades will be recieved by successful participation in them. For detailed description of the grading system, please visit the technical details slides.
+ -  - [First Kaggle challenge](https://www.kaggle.com/t/93653e153ffb4114b96034c21010bc6e)
 
 # Materials
  - [Python for Data Science, Coursera](https://www.coursera.org/learn/python-for-applied-data-science)

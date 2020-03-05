@@ -9,7 +9,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 - Neptun: deeplea17m
 - Language: Hungarian (slides and the materials in English)
 - Start: 2020.02.14.
-- Time: 13:00-14:00
+- Time: 12:45-13:45
 - Location: 0.79 Jánossy Lajos room, North building
 
 # Questions, problems:
@@ -24,6 +24,7 @@ In recent years we witnessed a huge development in machine learning, especially 
  - Ribli Dezső (former)
 
 # News
+ - from 6th March the lecture will start 15 mins earlier! (from 12:45 to 13:45)
  - register to [Kaggle](https://www.kaggle.com/)
  - please fill [this form](https://docs.google.com/forms/d/e/1FAIpQLSe03Mx6xKUo1HD46aaU1WtlxbYvU_kBF9bXEkW1mmkQxvl-Yg/viewform?usp=sf_link) (to match Kaggle usernames and Neptun codes).
  - First Kaggle challenge is available through [this link](https://www.kaggle.com/t/93653e153ffb4114b96034c21010bc6e). It is a limited competition, so you can download the data only via this link.

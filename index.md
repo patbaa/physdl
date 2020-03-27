@@ -38,13 +38,13 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  2 | Machine learning: ideas, concepts              | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/02_ml_intro.pdf) | 2020.02.21. |
 |  3 | Machine learning model zoo & examples          | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/03_ml_model_zoo.pdf), [notebook](https://colab.research.google.com/github/patbaa/demo_notebooks/blob/master/ML_model_zoo.ipynb) | 2020.02.28. |
 |  4 | Fully connected neural networks                | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/04_fully_connected.pdf), [notebook](https://colab.research.google.com/github/patbaa/demo_notebooks/blob/master/fully_connected.ipynb) | 2020.03.06. |
-|  5 | Convolutional neural networks                  | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_convolution_cnn.pdf), [notebook](https://colab.research.google.com/github/patbaa/demo_notebooks/blob/master/first_cnn.ipynb) | 2020.03.13. |
-|  6 | Practical CNN, pre-trained models              | Pataki Bálint Ármin | TBD | 2020.03.20. |
-|  7 | CNN visualization, self-supervised learning    | Pataki Bálint Ármin | TBD | 2020.03.27. |
-|  8 | Modern CNN architectures                       | Olar Alex           | TBD | 2020.04.03. |
-|  9 | Adversarial examples, GANs                     | Pataki Bálint Ármin | TBD | 2020.04.17. |
-| 10 | Object detection, segmentation                 | Olar Alex           | TBD | 2020.04.24. |
-| 11 | Sequential models, recurrent neural networks   | Pataki Bálint Ármin | TBD | 2020.05.15. |
+|  5 | Convolutional neural networks                  | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/05_convolution_cnn.pdf), [notebook](https://colab.research.google.com/github/patbaa/demo_notebooks/blob/master/first_cnn.ipynb), [video](https://www.youtube.com/watch?v=MHG2_o83ZiQ) | 2020.03.27. |
+|  6 | Practical CNN, pre-trained models              | Pataki Bálint Ármin | TBD | 2020.04.03. |
+|  7 | CNN visualization, self-supervised learning    | Pataki Bálint Ármin | TBD | 2020.04.10. |
+|  8 | Modern CNN architectures                       | Olar Alex           | TBD | 2020.04.17. |
+|  9 | Adversarial examples, GANs                     | Pataki Bálint Ármin | TBD | TBD |
+| 10 | Object detection, segmentation                 | Olar Alex           | TBD | TBD |
+| 11 | Sequential models, recurrent neural networks   | Pataki Bálint Ármin | TBD | TBD |
 
 # PREREQUISITES
  - basic linear algebra

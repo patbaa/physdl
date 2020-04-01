@@ -24,6 +24,7 @@ In recent years we witnessed a huge development in machine learning, especially 
  - Ribli Dezső (former)
 
 # News
+ - Second Kaggle challenge is live! Access via [this link](https://www.kaggle.com/t/75353561d50449c78936a39eb226894f)!
  - from 6th March the lecture will start 15 mins earlier! (from 12:45 to 13:45)
  - register to [Kaggle](https://www.kaggle.com/)
  - please fill [this form](https://docs.google.com/forms/d/e/1FAIpQLSe03Mx6xKUo1HD46aaU1WtlxbYvU_kBF9bXEkW1mmkQxvl-Yg/viewform?usp=sf_link) (to match Kaggle usernames and Neptun codes).

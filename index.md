@@ -43,7 +43,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  6 | Practical CNN, pre-trained models              | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/06_practical.pdf), [notebook_inference](https://colab.research.google.com/github/patbaa/demo_notebooks/blob/master/cnn_inference.ipynb), [notebook_finetune](https://colab.research.google.com/github/patbaa/demo_notebooks/blob/master/cnn_fine_tuning.ipynb), [video](https://youtu.be/OJSzO_M3P7Q) | 2020.04.03. |
 |  7 | CNN visualization, self-supervised learning    | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/07_cnn_vis_deeplea17em.pdf), [vis_notebook](https://github.com/patbaa/demo_notebooks/blob/master/CNN_vis.ipynb), [video](https://youtu.be/ivNm20oBraA) | 2020.04.17. |
 |  8 | Modern CNN architectures                       | Olar Alex           | [PDF](http://patbaa.web.elte.hu/physdl/08_modern_cnn_architectures.pdf), [notebook](https://github.com/qbeer/small-projects/blob/master/08_modern_cnn_architectures/dl_architectures.ipynb), [video1](https://youtu.be/0QAnRurI2N8), [video2](https://youtu.be/0QaP2wcyAug) | 2020.04.24. |
-|  9 | Adversarial examples, GANs                     | Pataki Bálint Ármin | TBD | 2020.05.01. |
+|  9 | Adversarial examples, GANs                     | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/09_adversarial_GAN_deeplea17em.pdf), [notebook](https://github.com/patbaa/demo_notebooks/blob/master/adversarial.ipynb), [video](https://youtu.be/3061nTJ0Vuk) | 2020.05.05. |
 | 10 | Object detection, segmentation                 | Olar Alex           | TBD | TBD |
 | 11 | Sequential models, recurrent neural networks   | Pataki Bálint Ármin | TBD | TBD |
 

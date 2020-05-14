@@ -45,7 +45,7 @@ In recent years we witnessed a huge development in machine learning, especially 
 |  8 | Modern CNN architectures                       | Olar Alex           | [PDF](http://patbaa.web.elte.hu/physdl/08_modern_cnn_architectures.pdf), [notebook](https://github.com/qbeer/small-projects/blob/master/08_modern_cnn_architectures/dl_architectures.ipynb), [video1](https://youtu.be/0QAnRurI2N8), [video2](https://youtu.be/0QaP2wcyAug) | 2020.04.24. |
 |  9 | Adversarial examples, GANs                     | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/09_adversarial_GAN_deeplea17em.pdf), [notebook](https://github.com/patbaa/demo_notebooks/blob/master/adversarial.ipynb), [video](https://youtu.be/3061nTJ0Vuk) | 2020.05.05. |
 | 10 | Object detection, segmentation                 | Olar Alex           | [PDF](http://patbaa.web.elte.hu/physdl/10-object-detection-and-segmentation.pdf), [video](https://l.facebook.com/l.php?u=https%3A%2F%2Fyoutu.be%2F6mogq98ViY4%3Ffbclid%3DIwAR0H_3iJAv3jMFDz0mYgxg3RmgilCBSELeaNJb_WTN-COQ5jbk89fk5Yzy4&h=AT16LgabCitB2dC_6tkqNErZYqu_2AEY16klY7DXFfACyQGOY7m6DqzJ44PSn09nWJ2SruyMIXWKNWrw6S3r0M3wdIKuPA3ckBZyFfTa6qG_-pHYsgepYndo6bSGyuBis_Ecf-DYP6uX5A) | 2020.05.09. |
-| 11 | Sequential models, recurrent neural networks   | Pataki Bálint Ármin | TBD | TBD |
+| 11 | Sequential models, recurrent neural networks   | Pataki Bálint Ármin | [PDF](http://patbaa.web.elte.hu/physdl/11_sequential_deeplea17em.pdf), [wv_train](https://github.com/patbaa/demo_notebooks/blob/master/train_word2vec.ipynb), [wv_check](https://github.com/patbaa/demo_notebooks/blob/master/play_word2vec.ipynb) | 2020.05.15. |
 
 # PREREQUISITES
  - basic linear algebra
